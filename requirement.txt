@@ -1,0 +1,8 @@
+BeautifulSoup
+requests
+pandas
+numpy
+selenium
+webdriver_manager
+contextlib
+flask

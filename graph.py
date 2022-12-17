@@ -1,4 +1,6 @@
 class Graph:
+    """Main class for Graph data structure.
+    """
     def __init__(self):
         self.adj_list = {}
         self.node_info = {}

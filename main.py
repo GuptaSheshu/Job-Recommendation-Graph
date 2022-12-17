@@ -10,6 +10,13 @@ CACHE_FILENAME = 'data.json'
 
 
 def make_request_with_cache():
+    """Make request with cache if its available unless call
+    the API from the source.
+
+    Returns:
+        List: a list of job information wrapped up in
+        'JobPosting' class.
+    """
     cache_dict = get_cache(CACHE_FILENAME)
     if(cache_dict):
         print("Cache hit!")
@@ -126,6 +133,19 @@ def display_posts():
     
 
 def main(loc, fi, cmp, keyword):
+    """Main function to iterate over graph to find children nodes 
+    that satisfy user criteria.
+
+    Args:
+        loc (str): Location of the Job
+        fi (str): Type of employment (Full/Inter)
+        cmp (str): Company Name
+        keyword (str): A keyword for searching the Job.
+
+    Returns:
+        List: a list of job information and wrap it in 'JobPosting' 
+        class that satisfy the user requirements.
+    """
     df_abr_dict['outside_usa'] = 'outside_usa'
     usr_loc = df_abr_dict[loc.strip()].lower()
     

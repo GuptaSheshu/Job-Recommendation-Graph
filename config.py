@@ -1,5 +1,7 @@
 import json
 class JobPosting():
+    """Class to warp all the information in the Job posting.
+    """
     def __init__(self, job_title, company_name, location, job_url, job_description=None,
                  basic_qualificaiton = None,
                  preferred_qualification = None):
@@ -15,9 +17,16 @@ class JobPosting():
         print("Job title :-", self.job_title)
         print("Company Name :-", self.company_name)
         print("Location :-", self.location)
-        #print("Job title :-", self.job_title)
 
 def get_cache(CACHE_FILENAME):
+    """Read CACHE file if available.
+
+    Args:
+        CACHE_FILENAME (str): JSON cache file name
+
+    Returns:
+        dict: a dictionary describing the content in the cache file
+    """
     try:
         with open(CACHE_FILENAME, 'r') as fw:
             data = json.load(fw)
@@ -26,6 +35,13 @@ def get_cache(CACHE_FILENAME):
     return data
 
 def save_cache(CACHE_FILENAME, job_info_list, typ):
+    """Save Cache file to local system.
+
+    Args:
+        CACHE_FILENAME (str): JSON cache file name
+        job_info_list (List): A list of dictionary describing the job
+        typ (str): a unique identifier for cache to recognize the job source. 
+    """
     try:
         with open(CACHE_FILENAME, 'r') as fw:
             data = json.load(fw)
@@ -37,12 +53,30 @@ def save_cache(CACHE_FILENAME, job_info_list, typ):
         json.dump(data, fw)
 
 def load_cache(data):
+    """Loading the cache data
+
+    Args:
+        data (dict): a dictionary loaded from cache JSON file.
+
+    Returns:
+        List: a list of job information taken from cache and wrap it in
+        'JobPosting' class.
+    """
     PostList = []
     for key, val_list in data.items():
         PostList += wrap_class(val_list)
     return PostList
 
 def wrap_class(job_info_list):
+    """Wrapping the job information to JobPosting class.
+
+    Args:
+        job_info_list (dict): a dictionary containing job information.
+
+    Returns:
+        List: a list of job information taken from cache and wrap it in
+        'JobPosting' class.
+    """
     PostList = []
     for idx, job in enumerate(job_info_list):
         temp = JobPosting(job_title=job['job_title'], company_name = job['company_name'], location=job['location'],
@@ -52,6 +86,16 @@ def wrap_class(job_info_list):
     return PostList
 
 def get_unique_loc(PostList):
+    """Get unique location from the job database
+
+    Args:
+        PostList (List): a list of job information wrapped in 'JobPosting'
+        class
+
+    Returns:
+        tuple: a tuple of dictionary containing unique location outside and
+        inside US.
+    """
     loc = []
     for idx, val in enumerate(PostList):
         if(idx>=40):
@@ -90,6 +134,16 @@ def get_unique_loc(PostList):
     return loc_dict_us, loc_dict_outside
 
 def get_unique_company(PostList):
+    """Get unique company list from the job database.
+
+    Args:
+        PostList (List): a list of job information wrapped in 'JobPosting'
+        class
+
+    Returns:
+        dict : a dictionary whose keys are company and value is the occurence
+        of the company.
+    """
     cmp = []
     for idx, val in enumerate(PostList):
         try:
@@ -107,13 +161,12 @@ def get_unique_company(PostList):
     return cmp_dict
 
 
-    
-        
-# def get_url():
-#     apple_url = 'https://jobs.apple.com/en-us/search?team=machine-learning-infrastructure-MLAI-MLI+deep-learning-and-reinforcement-learning-MLAI-DLRL+natural-language-processing-and-speech-technologies-MLAI-NLP+computer-vision-MLAI-CV+applied-research-MLAI-AR+apps-and-frameworks-SFTWR-AF+cloud-and-infrastructure-SFTWR-CLD+core-operating-systems-SFTWR-COS+devops-and-site-reliability-SFTWR-DSR+engineering-project-management-SFTWR-EPM+information-systems-and-technology-SFTWR-ISTECH+machine-learning-and-ai-SFTWR-MCHLN+security-and-privacy-SFTWR-SEC+software-quality-automation-and-tools-SFTWR-SQAT+wireless-software-SFTWR-WSFT+services-marketing-MKTG-SVCM+product-marketing-MKTG-PM+marketing-communications-MKTG-MKTCM+corporate-communications-MKTG-CRPCM+internships-STDNT-INTRN+corporate-STDNT-CORP+apple-store-STDNT-ASTR+apple-store-leader-program-STDNT-ASLP+apple-retail-partner-store-STDNT-ARPS+apple-support-college-program-STDNT-ACCP+apple-campus-leader-STDNT-ACR+acoustic-technologies-HRDWR-ACT+analog-and-digital-design-HRDWR-ADD+architecture-HRDWR-ARCH+battery-engineering-HRDWR-BE+camera-technologies-HRDWR-CAM+display-technologies-HRDWR-DISP+engineering-project-management-HRDWR-EPM+environmental-technologies-HRDWR-ENVT+health-technology-HRDWR-HT+machine-learning-and-ai-HRDWR-MCHLN+mechanical-engineering-HRDWR-ME+process-engineering-HRDWR-PE+reliability-engineering-HRDWR-REL+sensor-technologies-HRDWR-SENT+silicon-technologies-HRDWR-SILT+system-design-and-test-engineering-HRDWR-SDE+wireless-hardware-HRDWR-WT'
-#     amazon_url = 'https://www.amazon.jobs/en/search?offset='+str(10*nn)+'&result_limit=10&sort=relevant&category%5B%5D=machine-learning-science&category%5B%5D=software-development&category%5B%5D=research-science&category%5B%5D=data-science&country%5B%5D=USA&country%5B%5D=CAN&country%5B%5D=GBR&country%5B%5D=IND&country%5B%5D=JPN&country%5B%5D=AUS&country%5B%5D=ESP&distanceType=Mi&radius=24km&latitude=&longitude=&loc_group_id=&loc_query=&base_query=applied%20science&city=&country=&region=&county=&query_options=&'
-
 def get_url_glassdoor():
+    """URL for glassdoor
+
+    Returns:
+        dict: a dictionary who keys describing the query and value describing URL.
+    """
     query_dict = {
         'software-engineer':'https://www.glassdoor.com/Job/united-states-software-engineer-jobs-SRCH_IL.0,13_IN1_KO14,31.htm?minRating=4.00&employerSizes=5',
         'machine-learning':'https://www.glassdoor.com/Job/us-machine-learning-jobs-SRCH_IL.0,2_IN1_KO3,19.htm?minRating=4.00&employerSizes=5',

@@ -16,6 +16,16 @@ class AmazonScrape():
     """
 
     def get_job_listing(self, soup):
+        """ Method to extract job information such as company name, 
+        job_url, job_title based on query.
+
+        Args:
+            soup (bs4.BeautifulSoup): a BeautifulSoup datatype to 
+            access HTML types for extraction of certain class.
+
+        Returns:
+            List: A list of dictionary containing job information.
+        """
         job_info_list = []
         job_list = []
         
@@ -39,6 +49,19 @@ class AmazonScrape():
         return job_info_list
     
     def get_job_description(self, job_info_list, browser_options):
+        """Extract extra information about the job such as Job description,
+        basic qualification, and preferred qualification.
+
+        Args:
+            job_info_list (List): A list of dictionary containing basic job
+            information.
+            browser_options (selenium.webdriver.chrome.options.Options): browser
+            options for selenium to interact with browser to give HTML.
+
+        Returns:
+            job_info_list (List): A list of dictionary containing basic job
+            information and advanced information such as job description etc.
+        """
         for idx, job in enumerate(job_info_list):
             # webpage.get(job['job_url'])
             
